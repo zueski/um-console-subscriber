@@ -187,7 +187,7 @@ public class Subscriber extends Client implements nEventListener, ApplicationRun
 		try
 		{
 			DynamicMessage dm =  DynamicMessage.parseFrom(md, evt.getEventData());
-			LOGGER.error(JsonFormat.printToString(dm));
+			LOGGER.error(md.getName() + ": " + JsonFormat.printToString(dm));
 		} catch(Exception e) {
 			LOGGER.error("Unable to parse message", e);
 		}
