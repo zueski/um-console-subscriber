@@ -142,7 +142,7 @@ public abstract class Client implements nReconnectHandler, nAsyncExceptionListen
 			LOGGER.error("Error creating Session Attributes. Please check your RNAME", ex);
 			System.exit(1);
 		}
-		String USERNAME = props.getProperty("UM_USERNAME", DEFAULT_USERNAME);
+		String USERNAME = props.getProperty("um_username", DEFAULT_USERNAME);
 		//Add this class as an asynchronous exception listener
 		try 
 		{
@@ -226,7 +226,7 @@ public abstract class Client implements nReconnectHandler, nAsyncExceptionListen
 	{
 		try 
 		{
-			LOGGER.info("Attempting to reconnect to "+props.get("RNAME"));
+			LOGGER.info("Attempting to reconnect to "+props.get("rname"));
 		} catch (Exception ex) {
 			LOGGER.error("Error while trying to reconnect ", ex);
 		}

@@ -224,7 +224,7 @@ public class Subscriber extends Client implements nEventListener, ApplicationRun
 		{
 			try 
 			{
-				startEid = Integer.parseInt(subscriber.getProperty("START"));
+				startEid = Integer.parseInt(subscriber.getProperty("start"));
 			} catch (Exception num) { } // Ignore and use the defaults
 		}
 		
@@ -262,12 +262,12 @@ public class Subscriber extends Client implements nEventListener, ApplicationRun
 	{
 		LOGGER.error("Usage ...\n");
 		LOGGER.error("  call with each setting as a key:value pair on commandline, e.g.:\n");
-		LOGGER.error("    runSubscriber CHANNAME:sampleChannel SIZE:100 RNAME:nhp://uslxcd001619:9001 DEBUG:3\n");
+		LOGGER.error("    --channel=sampleChannel --rname=nhp://uslx416:9000\n");
 		LOGGER.error("----------- Required Arguments> -----------\n");
-		LOGGER.error("CHANNAME:  Channel name parameter for the channel to subscribe to");
+		LOGGER.error("channel:  Channel name parameter for the channel to subscribe to");
 		LOGGER.error("\n----------- Optional Arguments -----------\n");
-		LOGGER.error("START:  The Event ID to start subscribing from");
-		LOGGER.error("SELECTOR:  The event filter string to use\n");
+		LOGGER.error("start:  The Event ID to start subscribing from");
+		LOGGER.error("selector:  The event filter string to use\n");
 		UsageEnv();
 	}
 
