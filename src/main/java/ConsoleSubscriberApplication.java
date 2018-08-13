@@ -39,7 +39,6 @@ public class ConsoleSubscriberApplication implements ApplicationRunner
 			Usage();
 			System.exit(1);
 		}
-		String rname = rnames.get(0);
 		// start a consumer for each channel
 		List<String> channels = args.getOptionValues("channel");
 		if(channels == null || channels.size() < 1)
@@ -56,6 +55,7 @@ public class ConsoleSubscriberApplication implements ApplicationRunner
 		
 		for(int i = 0; i < channels.size(); i++)
 		{
+			String rname = (i < rnames.size()) ? rnames.get(i) : rnames.get(0);
 			String channel = channels.get(i);
 			String selector = (selectors.size() > i) ? selectors.get(i) : null;
 			Long start = -1L;
@@ -86,7 +86,7 @@ public class ConsoleSubscriberApplication implements ApplicationRunner
 	{
 		LOGGER.error("Usage ...\n");
 		LOGGER.error("  call with each setting as a key:value pair on commandline, e.g.:\n");
-		LOGGER.error("    --channel=sampleChannel --rname=nhp://uslx416:9000\n");
+		LOGGER.error("    --rname=nhp://uslx416:9000 --channel=sampleChannel\n");
 		LOGGER.error("----------- Required Arguments> -----------\n");
 		LOGGER.error("channel:  Channel name parameter for the channel to subscribe to");
 		LOGGER.error("\n----------- Optional Arguments -----------\n");

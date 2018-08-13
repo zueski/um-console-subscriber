@@ -50,8 +50,9 @@ public class Subscriber extends Client implements nEventListener
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Subscriber.class);
 	
-	static long startEid;
-	static String selector = null;
+	long startEid;
+	String rname = null;
+	String selector = null;
 	
 	private long lastEID = 0;
 	private long startTime = 0;
@@ -89,12 +90,13 @@ public class Subscriber extends Client implements nEventListener
 	 * @param repCount
 	 *            the specified report count
 	 */
-	public void start(String RNAME, String achannelName, String selector, long startEid)
+	public void start(String rname, String achannelName, String selector, long startEid)
 	{
-		LOGGER.info("Starting consumer on " + RNAME + " for " + achannelName + " using filter " + selector + " at " + startEid);
+		LOGGER.info("Starting consumer on " + rname + " for " + achannelName + " using filter " + selector + " at " + startEid);
+		this.rname = rname;
 		// Process the local REALM RNAME details
 		String[] rproperties = new String[4];
-		rproperties = parseRealmProperties(RNAME);
+		rproperties = parseRealmProperties(rname);
 		constructSession(rproperties);
 		// Subscribes to the specified channel
 		try 
@@ -191,7 +193,7 @@ public class Subscriber extends Client implements nEventListener
 		try
 		{
 			DynamicMessage dm =  DynamicMessage.parseFrom(md, evt.getEventData());
-			LOGGER.error(md.getName() + ": " + JsonFormat.printToString(dm));
+			LOGGER.error(rname + " - " + md.getName() + ": " + JsonFormat.printToString(dm));
 		} catch(Exception e) {
 			LOGGER.error("Unable to parse message", e);
 		}
