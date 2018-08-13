@@ -195,7 +195,7 @@ public class Subscriber extends Client implements nEventListener
 			DynamicMessage dm =  DynamicMessage.parseFrom(md, evt.getEventData());
 			LOGGER.error(rname + " - " + md.getName() + ": " + JsonFormat.printToString(dm));
 		} catch(Exception e) {
-			LOGGER.error("Unable to parse message", e);
+			LOGGER.error(rname + " - " + md.getName() + " -- Unable to parse message", e);
 		}
 		// Increment he counter
 		count++;
