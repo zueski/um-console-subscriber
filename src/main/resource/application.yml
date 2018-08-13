@@ -1,5 +1,7 @@
+log4j:
+  rootLogger: INFO, file, stdout
 logging:
-  file: um-console-subscriber.log
+  file: events.log
   level:
     ROOT: INFO
     com.amway: TRACE
