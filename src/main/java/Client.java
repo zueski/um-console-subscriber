@@ -261,7 +261,7 @@ public abstract class Client implements nReconnectHandler, nAsyncExceptionListen
 		}
 	}
 	
-	protected static void UsageEnv() 
+	public static void UsageEnv() 
 	{
 		LOGGER.error("----------- Connecton Settings ----------- \n");
 		LOGGER.error("rname:  One or more RNAME entries in the form protocol://host:port" );

@@ -45,9 +45,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
-@SpringBootApplication
 @EnableAutoConfiguration
-public class Subscriber extends Client implements nEventListener, ApplicationRunner
+public class Subscriber extends Client implements nEventListener
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Subscriber.class);
 	
@@ -90,9 +89,13 @@ public class Subscriber extends Client implements nEventListener, ApplicationRun
 	 * @param repCount
 	 *            the specified report count
 	 */
-	private void doit(String[] realmDetails, String achannelName, String selector, long startEid)
+	public void start(String RNAME, String achannelName, String selector, long startEid)
 	{
-		constructSession(realmDetails);
+		LOGGER.info("Starting consumer on " + RNAME + " for " + achannelName + " using filter " + selector + " at " + startEid);
+		// Process the local REALM RNAME details
+		String[] rproperties = new String[4];
+		rproperties = parseRealmProperties(RNAME);
+		constructSession(rproperties);
 		// Subscribes to the specified channel
 		try 
 		{
@@ -126,6 +129,7 @@ public class Subscriber extends Client implements nEventListener, ApplicationRun
 			
 			// Add this object as a subscribe to the channel with the specified
 			// message selector channel and start eid
+			LOGGER.info("Connecting to " + achannelName + " with selector: " + selector);
 			myChannel.addSubscriber(this, selector, startEid);
 		} catch (nChannelNotFoundException cnfe) {
 			LOGGER.error("The channel specified could not be found.", cnfe);
@@ -196,80 +200,7 @@ public class Subscriber extends Client implements nEventListener, ApplicationRun
 		totalMsgs++;
 	}
 	
-	@Override
-	public void run(ApplicationArguments args) throws Exception 
-	{
-		LOGGER.info("Application started with command-line arguments: {}", Arrays.toString(args.getSourceArgs()));
-		// Process command line arguments
-		Properties props = new Properties();
-		for(String name : args.getOptionNames())
-		{
-			List<String> opts = args.getOptionValues(name);
-			props.put(name, opts.get(0));
-		}
-		// Create an instance for this class
-		Subscriber subscriber = new Subscriber(props);
-		// Check the channel name specified
-		String channelName = null;
-		if(subscriber.getProperty("channel") != null)
-		{
-			channelName = subscriber.getProperty("channel");
-		} else {
-			Usage();
-			System.exit(1);
-		}
-		startEid = -1; // Default value (points to last event in the channel +  1)
-		// Check to see if a start EID value has been specified
-		if(subscriber.getProperty("start") != null) 
-		{
-			try 
-			{
-				startEid = Integer.parseInt(subscriber.getProperty("start"));
-			} catch (Exception num) { } // Ignore and use the defaults
-		}
-		
-		// Check for a selector message filter value
-		selector = System.getProperty("selector");
 
-		// Check the local realm details
-		int idx = 0;
-		String RNAME = null;
-		if(subscriber.getProperty("rname") != null)
-		{
-			RNAME = subscriber.getProperty("rname");
-		} else {
-			Usage();
-			System.exit(1);
-		}
-
-		// Process the local REALM RNAME details
-		String[] rproperties = new String[4];
-		rproperties = parseRealmProperties(RNAME);
-
-		// Subscribe to the channel specified
-		subscriber.doit(rproperties, channelName, selector, startEid);
-	}
-	
-	public static void main(String[] args) 
-	{
-		SpringApplication.run(Subscriber.class, args);
-	}
-	
-	/**
-	 * Prints the usage message for this class
-	 */
-	private static void Usage() 
-	{
-		LOGGER.error("Usage ...\n");
-		LOGGER.error("  call with each setting as a key:value pair on commandline, e.g.:\n");
-		LOGGER.error("    --channel=sampleChannel --rname=nhp://uslx416:9000\n");
-		LOGGER.error("----------- Required Arguments> -----------\n");
-		LOGGER.error("channel:  Channel name parameter for the channel to subscribe to");
-		LOGGER.error("\n----------- Optional Arguments -----------\n");
-		LOGGER.error("start:  The Event ID to start subscribing from");
-		LOGGER.error("selector:  The event filter string to use\n");
-		UsageEnv();
-	}
 
 } // End of subscriber Class
 
