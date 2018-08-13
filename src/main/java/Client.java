@@ -263,26 +263,26 @@ public abstract class Client implements nReconnectHandler, nAsyncExceptionListen
 	
 	public static void UsageEnv() 
 	{
-		LOGGER.error("----------- Connecton Settings ----------- \n");
-		LOGGER.error("rname:  One or more RNAME entries in the form protocol://host:port" );
-		LOGGER.error("   protocol - Can be one of nsp, nhp, nsps, or nhps, where:" );
-		LOGGER.error("   nsp - Specifies Nirvana Socket Protocol (nsp)" );
-		LOGGER.error("   nhp - Specifies Nirvana HTTP Protocol (nhp)" );
-		LOGGER.error("   nsps - Specifies Nirvana Socket Protocol Secure (nsps), i.e. using SSL/TLS" );
-		LOGGER.error("   nhps - Specifies Nirvana HTTP Protocol Secure (nhps), i.e. using SSL/TLS" );
-		LOGGER.error("   port - The port number of the server" );
-		LOGGER.error(" (Hint: - For multiple RNAME entries, use comma separated values which will be attempted in connection weight order)" );
-		LOGGER.error("loglevel:  This determines how much information the nirvana api will output 0 = verbose 7 = quiet (not the client)" );
-		LOGGER.error("ckeystore:  If using SSL, the location of the keystore containing the client cert");
-		LOGGER.error("ckeystorepasswd:  If using SSL, the password for the keystore containing the client cert");
-		LOGGER.error("cakeystore:  If using SSL, the location of the ca truststore");
-		LOGGER.error("cakeystorepasswd:  If using SSL, the password for the ca truststore");
-		LOGGER.error("hproxy:  HTTP Proxy details in the form proxyhost:proxyport, where:" );
-		LOGGER.error("   proxyhost - The HTTP proxy host" );
-		LOGGER.error("   proxyport - The HTTP proxy port" );
-		LOGGER.error("hauth:  HTTP Proxy authentication details in the form user:pass, where:" );
-		LOGGER.error("   user - The HTTP proxy authentication username" );
-		LOGGER.error("   pass - The HTTP proxy authentication password" );
+		System.err.println("----------- Connecton Settings ----------- \n");
+		System.err.println("rname:  One or more RNAME entries in the form protocol://host:port" );
+		System.err.println("   protocol - Can be one of nsp, nhp, nsps, or nhps, where:" );
+		System.err.println("   nsp - Specifies Nirvana Socket Protocol (nsp)" );
+		System.err.println("   nhp - Specifies Nirvana HTTP Protocol (nhp)" );
+		System.err.println("   nsps - Specifies Nirvana Socket Protocol Secure (nsps), i.e. using SSL/TLS" );
+		System.err.println("   nhps - Specifies Nirvana HTTP Protocol Secure (nhps), i.e. using SSL/TLS" );
+		System.err.println("   port - The port number of the server" );
+		System.err.println(" (Hint: - For multiple RNAME entries, use comma separated values which will be attempted in connection weight order)" );
+		System.err.println("loglevel:  This determines how much information the nirvana api will output 0 = verbose 7 = quiet (not the client)" );
+		System.err.println("ckeystore:  If using SSL, the location of the keystore containing the client cert");
+		System.err.println("ckeystorepasswd:  If using SSL, the password for the keystore containing the client cert");
+		System.err.println("cakeystore:  If using SSL, the location of the ca truststore");
+		System.err.println("cakeystorepasswd:  If using SSL, the password for the ca truststore");
+		System.err.println("hproxy:  HTTP Proxy details in the form proxyhost:proxyport, where:" );
+		System.err.println("   proxyhost - The HTTP proxy host" );
+		System.err.println("   proxyport - The HTTP proxy port" );
+		System.err.println("hauth:  HTTP Proxy authentication details in the form user:pass, where:" );
+		System.err.println("   user - The HTTP proxy authentication username" );
+		System.err.println("   pass - The HTTP proxy authentication password" );
 	}
 	
 	// methods to debug events

@@ -84,14 +84,17 @@ public class ConsoleSubscriberApplication implements ApplicationRunner
 	 */
 	private static void Usage() 
 	{
-		LOGGER.error("Usage ...\n");
-		LOGGER.error("  call with each setting as a key:value pair on commandline, e.g.:\n");
-		LOGGER.error("    --rname=nhp://uslx416:9000 --channel=sampleChannel\n");
-		LOGGER.error("----------- Required Arguments> -----------\n");
-		LOGGER.error("channel:  Channel name parameter for the channel to subscribe to");
-		LOGGER.error("\n----------- Optional Arguments -----------\n");
-		LOGGER.error("start:  The Event ID to start subscribing from");
-		LOGGER.error("selector:  The event filter string to use\n");
+		System.err.println("Usage ...\n");
+		System.err.println("  call with each setting as a key:value pair on commandline, e.g.:\n");
+		System.err.println("    --rname=nhp://uslx416:9000 --channel=sampleChannel\n");
+		System.err.println("----------- Required Arguments> -----------\n");
+		System.err.println("channel:  At least one channel name must be set, more than one can be setup");
+		System.err.println("rname:    At least one realm must be set, if multiple channels are set, a matching");
+		System.err.println("          number of rnames can be passed, otherwise just the first would be used for");
+		System.err.println("          all channels.");
+		System.err.println("\n----------- Optional Arguments -----------\n");
+		System.err.println("start:  The Event ID to start subscribing from");
+		System.err.println("selector:  The event filter string to use\n");
 		Subscriber.UsageEnv();
 	}
 }
