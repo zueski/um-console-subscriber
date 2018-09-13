@@ -2,6 +2,10 @@ log4j:
   rootLogger: INFO, file, stdout
 logging:
   file: events.log
+  path: logs
   level:
     ROOT: INFO
     com.amway: TRACE
+spring:
+  banner:
+    location: classpath:banner.txt
