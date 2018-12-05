@@ -5,7 +5,7 @@
 
 	<groupId>com.amway.integration</groupId>
 	<artifactId>um-console-subscriber</artifactId>
-	<version>0.1.1-RELEASE</version>
+	<version>0.1.2-RELEASE</version>
 	<packaging>jar</packaging>
 
 	<name>UM Console Subscriber</name>
@@ -36,14 +36,20 @@
 		<dependency>
 			<groupId>com.googlecode.protobuf-java-format</groupId>
 			<artifactId>protobuf-java-format</artifactId>
-			<version>1.2</version>
+			<version>1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.softwareag</groupId>
 			<artifactId>nClient</artifactId>
 			<version>9.12.0</version>
 		</dependency>
-		
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.9.7</version>
+		</dependency>
+
 		<!-- Compile -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

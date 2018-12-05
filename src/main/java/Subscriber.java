@@ -19,6 +19,10 @@ import com.pcbsys.nirvana.client.nUnexpectedResponseException;
 import com.pcbsys.nirvana.client.nUnknownRemoteRealmException;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Arrays;
@@ -35,7 +39,7 @@ import com.google.protobuf.Descriptors;
 import com.google.protobuf.DynamicMessage;
 import com.google.protobuf.Message;
 
-import com.googlecode.protobuf.format.JsonFormat;
+import com.googlecode.protobuf.format.JsonJacksonFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -53,13 +57,6 @@ public class Subscriber extends Client implements nEventListener
 	long startEid;
 	String rname = null;
 	String selector = null;
-	
-	private long lastEID = 0;
-	private long startTime = 0;
-	private long byteCount = 0;
-
-	private int count = -1;
-	private int totalMsgs = 0;
 	
 	private nChannel myChannel;
 	
@@ -118,12 +115,12 @@ public class Subscriber extends Client implements nEventListener
 			byte[][] protoDefBytes = myChannel.getChannelAttributes().getProtobufDescriptorSets();
 			if(protoDefBytes != null && protoDefBytes.length > 0)
 			{
-				LOGGER.info("Found defs " + protoDefBytes.length);
+				LOGGER.trace("Found defs " + protoDefBytes.length);
 				try
 				{
 					DescriptorProtos.FileDescriptorSet set = DescriptorProtos.FileDescriptorSet.parseFrom(protoDefBytes[0]);
 					md = Descriptors.FileDescriptor.buildFrom(set.getFile(0), new  Descriptors.FileDescriptor[] {}).getMessageTypes().get(0);
-					LOGGER.info("Channel has following protodefs: "+ md.getName());
+					LOGGER.trace("Channel has following protodefs: "+ md.getName());
 				} catch(Exception e) {
 					LOGGER.error("Unable to compile protobuf defitions", e);
 				}
@@ -131,7 +128,7 @@ public class Subscriber extends Client implements nEventListener
 			
 			// Add this object as a subscribe to the channel with the specified
 			// message selector channel and start eid
-			LOGGER.info("Connecting to " + achannelName + " with selector: " + selector);
+			LOGGER.trace("Connecting to " + achannelName + " with selector: " + selector);
 			myChannel.addSubscriber(this, selector, startEid);
 		} catch (nChannelNotFoundException cnfe) {
 			LOGGER.error("The channel specified could not be found.", cnfe);
@@ -161,14 +158,6 @@ public class Subscriber extends Client implements nEventListener
 			LOGGER.error("An error occured while creating the Channel Attributes object.", nbce);
 			System.exit(1);
 		}
-		
-		//try 
-		//{
-		//	//this.wait();
-		//	//nSessionFactory.close(mySession);
-		//} catch (Exception ex) { }
-		// Close any other sessions within this JVM so that we can exit
-		//nSessionFactory.shutdown();
 	}
 	
 	/**
@@ -183,26 +172,29 @@ public class Subscriber extends Client implements nEventListener
 	 */
 	public void go(nConsumeEvent evt) 
 	{
-		// If this is the first message we receive
-		if(count == -1) 
-		{	// Get a timestamp to be used for message rate calculations
-			startTime = System.currentTimeMillis();
-			count = 0;
-		}
 		// display message
+		
+		
 		try
 		{
+			LOGGER.info(rname + " - " + evt.getChannelName() + " - " + md.getName() + " - ID:" + evt.getEventID() + " - start");
+			JsonJacksonFormat formatter = new JsonJacksonFormat();
+			ByteArrayOutputStream bos = new java.io.ByteArrayOutputStream();
+			LOGGER.info(rname + " - " + evt.getChannelName() + " - " + md.getName() + " - ID:" + evt.getEventID() + " - formatter instance");
 			DynamicMessage dm =  DynamicMessage.parseFrom(md, evt.getEventData());
-			LOGGER.info(rname + " - " + evt.getChannelName() + " - " + md.getName() + " - ID:" + evt.getEventID() + " - "  + JsonFormat.printToString(dm));
-		} catch(Exception e) {
-			LOGGER.error(rname + " - "  + evt.getChannelName() + " ID:" + evt.getEventID() + " - Unable to parse message", e);
+			LOGGER.info(rname + " - " + evt.getChannelName() + " - " + md.getName() + " - ID:" + evt.getEventID() + " - parsed");
+			formatter.print(dm, bos, StandardCharsets.UTF_8);
+			LOGGER.info(rname + " - " + evt.getChannelName() + " - " + md.getName() + " - ID:" + evt.getEventID() + " - print");
+			LOGGER.info(rname + " - " + evt.getChannelName() + " - " + md.getName() + " - ID:" + evt.getEventID() + " - "  + bos.toString(StandardCharsets.UTF_8.name()));
+			LOGGER.info(rname + " - " + evt.getChannelName() + " - " + md.getName() + " - ID:" + evt.getEventID() + " - end");
+		} catch(Throwable e) {
+			try
+			{
+				LOGGER.error(rname + " - "  + evt.getChannelName() + " ID:" + evt.getEventID() + " - Unable to parse message", e);
+			} catch(Throwable e2) {
+				LOGGER.error(rname + " - Unknown error - Unable to print error message with event", e2);
+			}
 		}
-		// Increment he counter
-		count++;
-		totalMsgs++;
 	}
-	
-
-
-} // End of subscriber Class
+}
 

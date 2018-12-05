@@ -4,8 +4,8 @@ logging:
   file: events.log
   path: logs
   level:
-    ROOT: INFO
-    com.amway: TRACE
+    ROOT: WARN
+    com.amway: INFO
 spring:
   banner:
     location: classpath:banner.txt
