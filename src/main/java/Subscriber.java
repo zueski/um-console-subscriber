@@ -177,16 +177,11 @@ public class Subscriber extends Client implements nEventListener
 		
 		try
 		{
-			LOGGER.info(rname + " - " + evt.getChannelName() + " - " + md.getName() + " - ID:" + evt.getEventID() + " - start");
 			JsonJacksonFormat formatter = new JsonJacksonFormat();
 			ByteArrayOutputStream bos = new java.io.ByteArrayOutputStream();
-			LOGGER.info(rname + " - " + evt.getChannelName() + " - " + md.getName() + " - ID:" + evt.getEventID() + " - formatter instance");
 			DynamicMessage dm =  DynamicMessage.parseFrom(md, evt.getEventData());
-			LOGGER.info(rname + " - " + evt.getChannelName() + " - " + md.getName() + " - ID:" + evt.getEventID() + " - parsed");
 			formatter.print(dm, bos, StandardCharsets.UTF_8);
-			LOGGER.info(rname + " - " + evt.getChannelName() + " - " + md.getName() + " - ID:" + evt.getEventID() + " - print");
 			LOGGER.info(rname + " - " + evt.getChannelName() + " - " + md.getName() + " - ID:" + evt.getEventID() + " - "  + bos.toString(StandardCharsets.UTF_8.name()));
-			LOGGER.info(rname + " - " + evt.getChannelName() + " - " + md.getName() + " - ID:" + evt.getEventID() + " - end");
 		} catch(Throwable e) {
 			try
 			{
