@@ -53,6 +53,14 @@ public class ConsoleSubscriberApplication implements ApplicationRunner
 		if(starts == null)
 		{	starts = new ArrayList<String>(); }
 		
+		List<String> usernames = args.getOptionValues("username");
+		if(usernames == null)
+		{	usernames = new ArrayList<String>(); }
+		
+		List<String> passwords = args.getOptionValues("password");
+		if(passwords == null)
+		{	passwords = new ArrayList<String>(); }
+		
 		if(rnames.size() > 1 && channels.size() == 1)
 		{	// special case
 			for(int i = 0; i < rnames.size(); i++)
@@ -60,15 +68,19 @@ public class ConsoleSubscriberApplication implements ApplicationRunner
 				String rname = rnames.get(i);
 				String channel = channels.get(0);
 				String selector = (selectors.size() > i) ? selectors.get(i) : null;
+				String username = (usernames.size() > i) ? usernames.get(i) : null;
+				String password = (passwords.size() > i) ? passwords.get(i) : null;
 				Long start = -1L;
 				if(i < starts.size())
 				{	try { start = Long.parseLong(starts.get(i)); } catch(Exception e) { } }
 				
-				LOGGER.trace("Creating consumer on " + rname + " for " + channel + " using filter " + selector + " at " + start);
+				LOGGER.trace("Creating consumer on " + rname + " for " + channel + " using filter " + selector + " at " + start + " as " + username);
 				
 				Properties props = new Properties();
 				props.put("rname", rname);
 				props.put("channel", channel);
+				props.put("username", username);
+				props.put("password", password);
 				// Create an instance for this class
 				Subscriber subscriber = new Subscriber(props);
 				// Subscribe to the channel specified
@@ -80,15 +92,19 @@ public class ConsoleSubscriberApplication implements ApplicationRunner
 				String rname = (i < rnames.size()) ? rnames.get(i) : rnames.get(0);
 				String channel = channels.get(i);
 				String selector = (selectors.size() > i) ? selectors.get(i) : null;
+				String username = (usernames.size() > i) ? usernames.get(i) : null;
+				String password = (passwords.size() > i) ? passwords.get(i) : null;
 				Long start = -1L;
 				if(i < starts.size())
 				{	try { start = Long.parseLong(starts.get(i)); } catch(Exception e) { } }
 				
-				LOGGER.trace("Creating consumer on " + rname + " for " + channel + " using filter " + selector + " at " + start);
+				LOGGER.trace("Creating consumer on " + rname + " for " + channel + " using filter " + selector + " at " + start + " as " + username);
 				
 				Properties props = new Properties();
 				props.put("rname", rname);
 				props.put("channel", channel);
+				props.put("username", username);
+				props.put("password", password);
 				// Create an instance for this class
 				Subscriber subscriber = new Subscriber(props);
 				// Subscribe to the channel specified

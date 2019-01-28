@@ -80,7 +80,6 @@ public abstract class Client implements nReconnectHandler, nAsyncExceptionListen
 		processEnvironmentVariable("ckeystorepasswd");
 		processEnvironmentVariable("cakeystore");
 		processEnvironmentVariable("cakeystorepasswd");
-		processEnvironmentVariable("um_username");
 		// Install any proxy server settings
 		fEnvironment.setProxyEnvironments();
 		// Install any ssl settings
@@ -142,14 +141,21 @@ public abstract class Client implements nReconnectHandler, nAsyncExceptionListen
 			LOGGER.error("Error creating Session Attributes. Please check your RNAME", ex);
 			System.exit(1);
 		}
-		String USERNAME = props.getProperty("um_username", DEFAULT_USERNAME);
+		String username = props.getProperty("username", DEFAULT_USERNAME);
+		String password = props.getProperty("password");
+		LOGGER.error("Starting with " + username + " using " + password);
 		//Add this class as an asynchronous exception listener
 		try 
 		{
 			//Create a session object from the session attributes object, passing this
 			//as a reconnect handler class (optional). This will ensure that the reconnection
 			// methods will get called by the API.
-			mySession = nSessionFactory.create(nsa, this, USERNAME);
+			if(password == null || password.length() < 1)
+			{
+				mySession = nSessionFactory.create(nsa, this, username);
+			} else {
+				mySession = nSessionFactory.create(nsa, this, username, password);
+			}
 			mySession.addAsyncExceptionListener(this);
 			mySession.enableThreading(4);
 		} catch (nIllegalArgumentException ex) { }
