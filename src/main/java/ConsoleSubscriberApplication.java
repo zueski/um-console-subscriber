@@ -103,8 +103,10 @@ public class ConsoleSubscriberApplication implements ApplicationRunner
 				Properties props = new Properties();
 				props.put("rname", rname);
 				props.put("channel", channel);
-				props.put("username", username);
-				props.put("password", password);
+				if(username != null)
+				{	props.put("username", username); }
+				if(password != null)
+				{	props.put("password", password); }
 				// Create an instance for this class
 				Subscriber subscriber = new Subscriber(props);
 				// Subscribe to the channel specified
